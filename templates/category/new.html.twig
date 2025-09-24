@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une catégorie
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h2>Créer une nouvelle catégorie</h2>
+
+		<div class="card shadow-sm">
+			<div class="card-body">
+				{{ form_start(form) }}
+				{{ form_row(form.name) }}
+				<button class="btn btn-primary mt-2">Créer</button>
+				{{ form_end(form) }}
+			</div>
+		</div>
+
+		<a href="{{ path('app_admin_category_index') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
+	</div>
+{% endblock %}

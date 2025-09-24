@@ -1,0 +1,30 @@
+security:
+    password_hashers:
+        App\Entity\User:
+            algorithm: auto
+
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: [ROLE_PREPARATEUR, ROLE_ACCUEIL]
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+
+    firewalls:
+        main:
+            lazy: true
+            provider: app_user_provider
+            custom_authenticators:
+                - App\Security\LoginFormAuthenticator
+            logout:
+                path: app_logout
+
+    access_control:
+        # Ordre important : première règle qui matche est appliquée
+        - { path: ^/admin, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/preparateur, roles: [ROLE_PREPARATEUR] }
+        - { path: ^/accueil, roles: [ROLE_ACCUEIL] }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/$, roles: PUBLIC_ACCESS }   # accès à la racine

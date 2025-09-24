@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des utilisateurs
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h2 class="text-primary mb-4">Utilisateurs</h2>
+		<a href="{{ path('app_admin_dashboard') }}" class="btn btn-outline-secondary mb-3">← Retour au tableau de bord</a>
+		<a href="{{ path('app_admin_user_new') }}" class="btn btn-sm btn-success mb-3">Ajouter un utilisateur</a>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Email</th>
+					<th>Rôles</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in users %}
+					<tr>
+						<td>{{ user.id }}</td>
+						<td>{{ user.email }}</td>
+						<td>{{ user.roles|join(', ') }}</td>
+						<td>
+							<a href="{{ path('app_admin_user_show', {'id': user.id}) }}" class="btn btn-sm btn-primary">Voir</a>
+							<a href="{{ path('app_admin_user_edit', {'id': user.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+							{% if user.id != app.user.id %}
+								<form method="post" action="{{ path('app_admin_user_delete', {'id': user.id}) }}" style="display:inline-block;">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+									<button class="btn btn-sm btn-danger" onclick="return confirm('Supprimer cet utilisateur ?')">Supprimer</button>
+								</form>
+							{% endif %}
+						</td>
+					</tr>
+				</td>
+			</tbody>
+		</tr>
+	{% else %}
+		<tr>
+			<td colspan="4" class="text-center text-muted">Aucun utilisateur trouvé.</td>
+		</tr>
+	{% endfor %}
+</tbody></table></div>{% endblock %}

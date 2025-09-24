@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'utilisateur
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h2 class="text-primary mb-4">Modifier l'utilisateur</h2>
+		<a href="{{ path('app_admin_user_index') }}" class="btn btn-outline-secondary mb-3">← Retour à la liste des utilisateurs</a>
+
+		{{ form_start(form) }}
+		{{ form_widget(form) }}
+		<button class="btn btn-warning mt-3">Mettre à jour</button>
+		{{ form_end(form) }}
+	</div>
+{% endblock %}

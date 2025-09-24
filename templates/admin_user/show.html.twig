@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateur
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h2 class="text-primary mb-4">Utilisateur :
+			{{ user.email }}</h2>
+		<a href="{{ path('app_admin_user_index') }}" class="btn btn-outline-secondary mb-3">← Retour à la liste des utilisateurs</a>
+
+		<ul class="list-group">
+			<li class="list-group-item">
+				<strong>ID :</strong>
+				{{ user.id }}</li>
+			<li class="list-group-item">
+				<strong>Email :</strong>
+				{{ user.email }}</li>
+			<li class="list-group-item">
+				<strong>Rôles :</strong>
+				{{ user.roles|join(', ') }}</li>
+		</ul>
+	</div>
+{% endblock %}
