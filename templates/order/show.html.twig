@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande #{{ order.id }}
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h2 class="text-primary mb-4">Commande #{{ order.id }}</h2>
+		<p>
+			<strong>Utilisateur:</strong>
+			{{ order.user ? order.user.email : 'Anonyme' }}</p>
+		<p>
+			<strong>Total:</strong>
+			{{ order.total }}
+			€</p>
+		<p>
+			<strong>Statut:</strong>
+			{{ order.statut }}</p>
+		<p>
+			<strong>Créée le:</strong>
+			{{ order.createdAt ? order.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+
+		<a href="{{ path('app_admin_order_index') }}" class="btn btn-outline-secondary mt-3">
+			← Retour à la liste des commandes
+		</a>
+
+		{% if is_granted('ROLE_SUPER_ADMIN') %}
+			<a href="{{ path('app_admin_order_edit', {'id': order.id}) }}" class="btn btn-warning mt-3">Modifier le statut</a>
+		{% endif %}
+	</div>
+{% endblock %}

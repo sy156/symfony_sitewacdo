@@ -1,0 +1,105 @@
+{# templates/preparateur/orders.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des commandes
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<h1 class="mb-4">Gestion des commandes</h1>
+
+		{# Boutons en haut #}
+		<div class="mb-3 d-flex gap-2">
+			<a href="{{ path('preparateur_order_new') }}" class="btn btn-primary">
+				<i class="bi bi-plus-circle"></i>
+				Nouvelle commande
+			</a>
+			<a href="{{ path('preparateur_dashboard') }}" class="btn btn-secondary">
+				<i class="bi bi-arrow-left-circle"></i>
+				Retour au tableau de bord
+			</a>
+		</div>
+
+		{# Flash messages #}
+		{% for label, messages in app.flashes %}
+			{% for message in messages %}
+				<div class="alert alert-{{ label == 'success' ? 'success' : 'danger' }}">
+					{{ message }}
+				</div>
+			{% endfor %}
+		{% endfor %}
+
+		{# Tableau des commandes #}
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Client / Numéro fictif</th>
+					<th>Total</th>
+					<th>Statut</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for order in orders %}
+					<tr>
+						<td>{{ order.id }}</td>
+						<td>
+							{% if order.user %}
+								{{ order.user.email }}
+							{% else %}
+								CMD-{{ '%04d'|format(order.id) }}
+							{% endif %}
+						</td>
+						<td>{{ order.total }}
+							€</td>
+						<td>
+							<span class="badge {{ order.getStatutClass() }}">
+								{{ order.getStatutLabel() }}
+							</span>
+						</td>
+						<td>
+							{# Détails de la commande #}
+							<a href="{{ path('preparateur_order_show', {id: order.id}) }}" class="btn btn-sm btn-info">
+								Détails
+							</a>
+
+							{# Préparer ou Livrer selon le statut #}
+							{% if order.isEnCours() %}
+								<form action="{{ path('preparateur_order_prepare', {id: order.id}) }}" method="post" style="display:inline-block">
+									<input type="hidden" name="_token" value="{{ csrf_token('prepare' ~ order.id) }}">
+									<button type="submit" class="btn btn-sm btn-primary" onclick="return confirm('Mettre cette commande en préparation ?')">Préparer</button>
+								</form>
+
+							{% elseif order.isEnPreparation() %}
+								<form action="{{ path('preparateur_order_deliver', {id: order.id}) }}" method="post" style="display:inline-block">
+									<input type="hidden" name="_token" value="{{ csrf_token('deliver' ~ order.id) }}">
+									<button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Livrer cette commande ?')">Livrer</button>
+								</form>
+
+							{% endif %}
+
+							{# Annuler si la commande n'est pas encore livrée #}
+							{% if not order.isLivree() %}
+								<form action="{{ path('preparateur_order_cancel', {id: order.id}) }}" method="post" style="display:inline">
+									<input type="hidden" name="_token" value="{{ csrf_token('cancel' ~ order.id) }}">
+									<button class="btn btn-sm btn-danger" onclick="return confirm('Annuler cette commande ?');">Annuler</button>
+								</form>
+
+
+							{% endif %}
+
+
+						</td>
+					</tr>
+				</a>
+			</tbody>
+		</td>
+
+
+	</tr>
+{% else %}
+	<tr>
+		<td colspan="5" class="text-center">Aucune commande trouvée</td>
+	</tr>
+{% endfor %}</tbody></table></div>{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ product.name }}
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card shadow-lg border-0 rounded-4">
+					<div class="card-body text-center p-5">
+						<h2 class="fw-bold text-primary mb-4">{{ product.name }}</h2>
+						<p class="lead mb-3">Prix :
+							{{ product.price }}
+							€</p>
+
+
+						<a href="{{ path('app_products') }}" class="btn btn-outline-primary mt-3">
+							Retour à la liste des produits
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

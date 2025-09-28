@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la catégorie
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h2>Détails de la catégorie</h2>
+
+		<table class="table table-bordered">
+			<tr>
+				<th>Nom</th>
+				<td>{{ category.name }}</td>
+			</tr>
+		</table>
+
+		<a href="{{ path('app_admin_category_index') }}" class="btn btn-secondary">Retour à la liste</a>
+
+		{% if is_granted('ROLE_SUPER_ADMIN') %}
+			<a href="{{ path('app_admin_category_edit', {'id': category.id}) }}" class="btn btn-warning">Modifier</a>
+			<form method="post" action="{{ path('app_admin_category_delete', {'id': category.id}) }}" style="display:inline-block;" onsubmit="return confirm('Supprimer cette catégorie ?');">
+				<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+				<button class="btn btn-danger">Supprimer</button>
+			</form>
+		{% endif %}
+	</div>
+{% endblock %}

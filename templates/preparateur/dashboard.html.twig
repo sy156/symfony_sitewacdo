@@ -1,0 +1,53 @@
+{# templates/preparateur/dashboard.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord Préparateur
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h2 class="text-primary mb-4">Bienvenue sur votre tableau de bord Préparateur</h2>
+
+		<div
+			class="row g-4">
+
+			{# Commandes et préparation #}
+			<div class="col-md-4">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<i class="bi bi-list-task fs-2 mb-2"></i>
+						<h5 class="card-title">Commandes et préparation</h5>
+						<p class="card-text">Voir toutes les commandes à préparer et modifier les items.</p>
+						<a href="{{ path('preparateur_order_list') }}" class="btn btn-success w-100">Voir les commandes</a>
+
+					</div>
+				</div>
+			</div>
+
+			{# Produits disponibles #}
+			<div class="col-md-4">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<i class="bi bi-box-seam fs-2 mb-2"></i>
+						<h5 class="card-title">Produits</h5>
+						<p class="card-text">Produits disponibles pour la préparation des commandes.</p>
+						<a href="{{ path('preparateur_product_list') }}" class="btn btn-secondary w-100">Voir les produits</a>
+					</div>
+				</div>
+			</div>
+
+			{# Déconnexion #}
+			<div class="col-md-4">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<i class="bi bi-box-arrow-right fs-2 mb-2"></i>
+						<h5 class="card-title">Déconnexion</h5>
+						<p class="card-text">Quitter le tableau de bord et revenir à la page d'accueil du site Wacdo.</p>
+						<a href="{{ path('app_logout') }}" class="btn btn-danger w-100">Se déconnecter</a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+{% endblock %}

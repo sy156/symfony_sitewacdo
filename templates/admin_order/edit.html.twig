@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier commande #{{ order.id }}
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h2 class="text-primary mb-4">Modifier le statut de la commande #{{ order.id }}</h2>
+		<a href="{{ path('app_admin_order_index') }}" class="btn btn-outline-secondary mb-3">← Retour à la liste des commandes</a>
+
+		{{ form_start(form) }}
+		{{ form_widget(form) }}
+		<button class="btn btn-warning mt-3">Mettre à jour</button>
+		{{ form_end(form) }}
+	</div>
+{% endblock %}

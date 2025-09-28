@@ -1,0 +1,80 @@
+{# templates/admin/dashboard.html.twig #}
+{% extends 'base.html.twig' %}
+{% block title %}
+	Tableau de bord
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h2 class="text-primary mb-4">Bienvenue sur votre tableau de bord Administrateur</h2>
+		<div
+			class="row g-4">
+
+			{# Utilisateurs #}
+			<div class="col-md-3">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<i class="bi bi-people-fill fs-2 mb-2"></i>
+						<h5 class="card-title">Utilisateurs</h5>
+						<p class="display-6">{{ usersCount }}</p>
+						<p class="card-text">utilisateurs enregistrés</p>
+						<a href="{{ path('app_admin_user_index') }}" class="btn btn-primary w-100">Gérer</a>
+					</div>
+				</div>
+			</div>
+
+			{# Produits #}
+			<div class="col-md-3">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<i class="bi bi-box-seam fs-2 mb-2"></i>
+						<h5 class="card-title">Produits</h5>
+						<p class="display-6">{{ productsCount }}</p>
+						<p class="card-text">produits disponibles</p>
+						<a href="{{ path('app_admin_product_index') }}" class="btn btn-secondary w-100">Gérer</a>
+					</div>
+				</div>
+			</div>
+
+			{# Catégories #}
+			<div class="col-md-3">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<i class="bi bi-tags-fill fs-2 mb-2"></i>
+						<h5 class="card-title">Catégories</h5>
+						<p class="display-6">{{ categoriesCount }}</p>
+						<p class="card-text">catégories créées</p>
+						<a href="{{ path('app_admin_category_index') }}" class="btn btn-warning w-100">Gérer</a>
+					</div>
+				</div>
+			</div>
+
+			{# Commandes #}
+			<div class="col-md-3">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<i class="bi bi-basket-fill fs-2 mb-2"></i>
+						<h5 class="card-title">Commandes</h5>
+						<p class="display-6">{{ ordersCount }}</p>
+						<p class="card-text">commandes enregistrées</p>
+						<a href="{{ path('app_admin_order_index') }}" class="btn btn-success w-100">Gérer</a>
+					</div>
+				</div>
+			</div>
+
+
+			{# Déconnexion #}
+			<div class="col-md-3">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<i class="bi bi-box-arrow-right fs-2 mb-2"></i>
+						<h5 class="card-title">Déconnexion</h5>
+						<p class="card-text">Quitter le tableau de bord et revenir à l'accueil du site Wacdo.</p>
+						<a href="{{ path('app_logout') }}" class="btn btn-danger w-100">Se déconnecter</a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+{% endblock %}

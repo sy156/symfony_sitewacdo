@@ -1,0 +1,82 @@
+{# templates/admin_order/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande #{{ order.id }}
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h2 class="text-primary mb-4">Commande #{{ order.id }}</h2>
+		<a href="{{ path('app_admin_order_index') }}" class="btn btn-outline-secondary mb-3">← Retour à la liste des commandes</a>
+
+		<ul class="list-group mb-3">
+			<li class="list-group-item">
+				<strong>Client :</strong>
+				{{ order.user ? order.user.email : 'Anonyme' }}</li>
+			<li class="list-group-item">
+				<strong>Total :</strong>
+				{{ order.total }}€</li>
+			<li class="list-group-item">
+				<strong>Statut :</strong>
+				{{ order.statutLabel }}</li>
+			<li class="list-group-item">
+				<strong>Créée le :</strong>
+				{{ order.createdAt ? order.createdAt|date('Y-m-d H:i') : '' }}</li>
+			<li class="list-group-item">
+				<strong>Numéro commande :</strong>
+				{{ order.id }}</li>
+		</ul>
+
+		<h4>Produits commandés :</h4>
+		<table class="table table-sm table-bordered">
+			<thead>
+				<tr>
+					<th>Produit</th>
+					<th>Quantité</th>
+					<th>Prix unitaire</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in order.orderItems %}
+					<tr>
+						<td>{{ item.product.name }}</td>
+						<td>{{ item.quantity }}</td>
+						<td>{{ item.product.price }}€</td>
+						<td>{{ item.quantity * item.product.price }}€</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<div
+			class="mt-3 d-flex gap-2">
+			{# Super admin et préparateur peuvent modifier le statut #}
+			<div
+				class="mt-3 d-flex gap-2">
+				{# Préparateur ou Super Admin #}
+				{% if is_granted('ROLE_PREPARATEUR') or is_granted('ROLE_SUPER_ADMIN') %}
+					<a href="{{ path('app_admin_order_edit', {'id': order.id}) }}" class="btn btn-warning">
+						Modifier le statut
+					</a>
+
+					<form action="{{ path('app_admin_order_serve', {'id': order.id}) }}" method="post" onsubmit="return confirm('Marquer cette commande comme servie ?');" style="display:inline-block">
+						<input type="hidden" name="_token" value="{{ csrf_token('serve' ~ order.id) }}">
+						<button type="submit" class="btn btn-success">Livrer</button>
+					</form>
+
+					<form action="{{ path('app_admin_order_cancel', {'id': order.id}) }}" method="post" style="display:inline-block" onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette commande ?');">
+						<input type="hidden" name="_token" value="{{ csrf_token('cancel' ~ order.id) }}">
+						<button type="submit" class="btn btn-warning">Annuler</button>
+					</form>
+				{% endif %}
+
+				{# Supprimer seulement pour le Super Admin #}
+				{% if is_granted('ROLE_SUPER_ADMIN') %}
+					<form action="{{ path('app_admin_order_delete', {'id': order.id}) }}" method="post" style="display:inline-block" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette commande et tous ses items ?');">
+						<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ order.id) }}">
+						<button type="submit" class="btn btn-danger">Supprimer</button>
+					</form>
+				{% endif %}
+			</div>
+		{% endblock %}

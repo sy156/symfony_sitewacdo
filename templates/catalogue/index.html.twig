@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Produits
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h2 class="text-center text-primary mb-4">Nos Produits</h2>
+
+		<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+			{% for product in products %}
+				<div class="col">
+					<div class="card shadow-sm border-0 h-100" style="background-color: #f8f9fa;">
+						<div class="card-body text-center p-3">
+							<h5 class="card-title mb-1 text-primary">{{ product.name }}</h5>
+							<p class="text-success mb-1">{{ product.price }}
+								€</p>
+
+							{# Affiche la phrase seulement si la catégorie est "Burgers" #}
+							{% if product.category and product.category.name == 'Burgers' %}
+								<p class="text-muted small mb-2">Une portion de frites incluse pour chaque burger acheté</p>
+							{% endif %}
+
+							<a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-sm btn-outline-primary w-100">
+								<i class="bi bi-eye"></i>
+							</a>
+
+
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+
+		</div>
+
+		<div class="text-center mt-4">
+			<a href="{{ path('app_home') }}" class="btn btn-outline-secondary">Retour à l’accueil</a>
+		</div>
+	</div>
+{% endblock %}

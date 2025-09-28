@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block body %}
+	<h1>{{ title }}</h1>
+
+	<p>Historique complet des commandes.</p>
+
+	<table class="table table-bordered mt-3">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Client</th>
+				<th>Total</th>
+				<th>Statut</th>
+				<th>Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for order in orders %}
+				<tr>
+					<td>{{ order.id }}</td>
+					<td>{{ order.user.email }}</td>
+					<td>{{ order.total }}
+						€</td>
+					<td>{{ order.statut }}</td>
+					<td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+					<td>
+						<a href="{{ path('order_prepare', {'id': order.id}) }}" class="btn btn-sm btn-warning">Préparer</a>
+					</td>
+					<td>
+						<span class="badge {{ order.getStatutClass() }}">
+							{{ order.getStatutLabel() }}
+						</span>
+					</td>
+					<td>
+						{% if order.isEnCours() %}
+							<a href="{{ path('order_prepare', {id: order.id}) }}" class="btn btn-sm btn-primary">
+								Préparer
+							</a>
+						{% endif %}
+					</td>
+
+
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="5">Aucune commande</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

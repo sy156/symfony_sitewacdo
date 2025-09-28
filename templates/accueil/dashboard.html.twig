@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord Accueil
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1 class="text-primary">Tableau de bord Accueil</h1>
+
+			<a href="{{ path('app_logout') }}" class="btn btn-danger">
+				<i class="bi bi-box-arrow-right"></i>
+				Se déconnecter
+			</a>
+		</div>
+
+		{# Bouton Nouvelle commande sous le titre #}
+		<div class="mb-3">
+			<form method="post" action="{{ path('accueil_order_new') }}">
+				<input type="hidden" name="_token" value="{{ csrf_token('order_new') }}">
+				<button type="submit" class="btn btn-primary">
+					<i class="bi bi-plus-circle"></i>
+					Nouvelle commande
+				</button>
+			</form>
+
+		</div>
+
+		{# Commandes en cours #}
+		<h3>Commandes en cours</h3>
+		<div class="row row-cols-1 row-cols-md-3 g-3 mb-5">
+			{% for order in ordersEnCours %}
+				<div class="col">
+					<div class="card border-warning">
+						<div class="card-header bg-warning text-dark">
+							Commande #{{ order.id }}
+							- Total:
+							{{ order.total }}€
+						</div>
+						<div class="card-body">
+							{% for item in order.items %}
+								<p>{{ item.product.name }}
+									x{{ item.quantity }}
+									-
+									{{ item.unitPrice }}€</p>
+							{% else %}
+								<p class="text-muted">Aucun produit ajouté</p>
+							{% endfor %}
+							<a href="{{ path('accueil_order_show', {'id': order.id}) }}" class="btn btn-primary btn-sm mt-2">
+								Voir / Ajouter produits
+							</a>
+						</div>
+					</div>
+				</div>
+			{% else %}
+				<p>Aucune commande en cours</p>
+			{% endfor %}
+		</div>
+
+		{# Commandes à remettre #}
+		<h3>Commandes à remettre</h3>
+		<div class="row row-cols-1 row-cols-md-3 g-3 mb-5">
+			{% for order in ordersToDeliver %}
+				<div class="col">
+					<div class="card border-info">
+						<div class="card-header bg-info text-dark">
+							Commande #{{ order.id }}
+							- Total:
+							{{ order.total }}€
+						</div>
+						<div class="card-body">
+							{% for item in order.items %}
+								<p>{{ item.product.name }}
+									x{{ item.quantity }}
+									-
+									{{ item.unitPrice }}€</p>
+							{% else %}
+								<p class="text-muted">Aucun produit ajouté</p>
+							{% endfor %}
+							<form method="post" action="{{ path('accueil_order_deliver', {'id': order.id}) }}">
+								<button class="btn btn-success btn-sm mt-2">
+									<i class="bi bi-check-circle"></i>
+									Remettre au client
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			{% else %}
+				<p>Aucune commande à remettre</p>
+			{% endfor %}
+		</div>
+
+		{# Commandes remises #}
+		<h3>Commandes remises</h3>
+		<div class="row row-cols-1 row-cols-md-3 g-3 mb-5">
+			{% for order in ordersDelivered %}
+				<div class="col">
+					<div class="card border-success">
+						<div class="card-header bg-success text-white">
+							Commande #{{ order.id }}
+							- Total:
+							{{ order.total }}€
+						</div>
+						<div class="card-body">
+							{% for item in order.items %}
+								<p>{{ item.product.name }}
+									x{{ item.quantity }}
+									-
+									{{ item.unitPrice }}€</p>
+							{% else %}
+								<p class="text-muted">Aucun produit ajouté</p>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			{% else %}
+				<p>Aucune commande remise</p>
+			{% endfor %}
+		</div>
+
+	</div>
+{% endblock %}
